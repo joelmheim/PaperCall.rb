@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Jørn Ølmheim"]
   spec.email         = ["joe@statoil.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = "Small client library for the PaperCall API"
+  spec.description   = "Small client library for the PaperCall API. With some analytics for the submissions."
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
@@ -33,4 +33,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-rspec"
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "rubocop"
+
+  spec.add_dependency "json"
+  spec.add_dependency "rest-client"
 end
