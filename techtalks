@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require './papercallapi'
+
+puts 'PaperCall api client'
+pcClient = PaperCallClient.new(true)
+#pcClient = PaperCallClient.new
+pcClient.status
+pcClient.techtalkstextfile
