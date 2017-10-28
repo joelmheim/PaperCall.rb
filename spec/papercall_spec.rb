@@ -1,75 +1,74 @@
-require "spec_helper"
+require 'spec_helper'
 
 describe Papercall do
-  describe Papercall, "#fetch" do
-    it "has a version number" do
+  describe Papercall, '#fetch' do
+    it 'has a version number' do
       expect(Papercall::VERSION).not_to be nil
     end
 
-    it "should read submissions from file" do
-      Papercall::fetch(:from_file)
-      expect(Papercall::submitted.length).to be > 0
-      expect(Papercall::accepted.length).to be > 0
+    it 'should read submissions from file' do
+      Papercall.fetch(:from_file)
+      expect(Papercall.submitted_talks.length).to be > 0
+      expect(Papercall.accepted_talks.length).to be > 0
+      expect(Papercall.rejected_talks.length).to be > 0
     end
 
-    it "should fetch submitted from papercall" do
-      Papercall::fetch(:from_papercall, :submitted)
-      expect(Papercall::submitted.length).to be > 0
-      expect(Papercall::accepted.length).to be 0
-      expect(Papercall::rejected.length).to be 0
-      expect(Papercall::waitlist.length).to be 0
+    it 'should fetch submitted from papercall' do
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submitted)
+      # CFP is closed no more regular submissions
+      expect(Papercall.submitted_talks.length).to be 0
     end
 
-    it "should fetch accepted from papercall" do
-      Papercall::fetch(:from_papercall, :accepted)
-      expect(Papercall::accepted.length).to be > 0
-      expect(Papercall::submitted.length).to be 0
-      expect(Papercall::rejected.length).to be 0
-      expect(Papercall::waitlist.length).to be 0
+    it 'should fetch accepted from papercall' do
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :accepted)
+      expect(Papercall.accepted_talks.length).to be > 0
     end
 
-    it "should fetch rejected from papercall" do
-      Papercall::fetch(:from_papercall, :rejected)
-      expect(Papercall::submitted.length).to be 0
-      expect(Papercall::accepted.length).to be 0
-      expect(Papercall::rejected.length).to be > 0
-      expect(Papercall::waitlist.length).to be 0
+    it 'should fetch rejected from papercall' do
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :rejected)
+      expect(Papercall.rejected_talks.length).to be > 0
     end
 
-    it "should fetch waitlist from papercall" do
-      Papercall::fetch(:from_papercall, :waitlist)
-      expect(Papercall::submitted.length).to be 0
-      expect(Papercall::accepted.length).to be 0
-      expect(Papercall::rejected.length).to be 0
-      expect(Papercall::waitlist.length).to be > 0
+    it 'should fetch waitlist from papercall' do
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :waitlist)
+      expect(Papercall.waitlist_talks.length).to be > 0
     end
 
+    it 'should fetch declined from papercall' do
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :declined)
+      expect(Papercall.declined_talks.length).to be > 0
+    end
   end
 
-  describe Papercall, "#all_submissions" do
+  describe Papercall, '#all_submissions' do
     before(:context) do
-      Papercall::fetch(:from_papercall, :submitted, :accepted, :rejected, :waitlist)
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submitted, :accepted, :rejected, :waitlist, :declined)
     end
 
-    it "should fetch all submissions from papercall" do
-      expect(Papercall::submitted.length).to be 2
-      expect(Papercall::accepted.length).to be 49
-      expect(Papercall::rejected.length).to be 45
-      expect(Papercall::waitlist.length).to be 12
+    it 'should fetch all submissions from papercall' do
+      expect(Papercall.submitted_talks.length).to be 0
+      expect(Papercall.accepted_talks.length).to be 50
+      expect(Papercall.rejected_talks.length).to be 45
+      expect(Papercall.waitlist_talks.length).to be 9
+      expect(Papercall.declined_talks.length).to be 3
     end
 
-    it "should save submissions to file" do
+    it 'should save submissions to file' do
       filename = 'test_write.json'
-      Papercall::save_to_file(filename)
+      Papercall.save_to_file(filename)
       expect(File).to exist(filename)
     end
 
-    it "should be able to tell the total number of submissions" do
-      expect(Papercall::number_of_submissions).to be 108
+    it 'should be able to tell the total number of submissions' do
+      expect(Papercall.number_of_submissions).to be 107
     end
 
-    it "should list number of confirmed talks" do
-      expect(Papercall::confirmed_talks.length).to be 43
+    it 'should list number of confirmed talks' do
+      expect(Papercall.confirmed_talks.length).to be 47
+    end
+
+    it 'should list all active reviewers' do
+      expect(Papercall.active_reviewers.length).to be 20
     end
   end
   #
