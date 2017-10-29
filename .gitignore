@@ -7,6 +7,6 @@
 /pkg/
 /spec/reports/
 /tmp/
-*.json
-*.rb
-*.gem
+/*.json
+/*.rb
+/*.gem

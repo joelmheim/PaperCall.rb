@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'papercall'
 
 describe Papercall do
   describe Papercall, '#fetch' do
@@ -68,7 +69,7 @@ describe Papercall do
     end
 
     it 'should list all active reviewers' do
-      expect(Papercall.active_reviewers.length).to be 20
+      expect(Papercall.active_reviewers.length).to be 21
     end
   end
   #
