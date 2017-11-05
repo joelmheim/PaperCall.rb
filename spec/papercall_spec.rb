@@ -12,6 +12,7 @@ describe Papercall do
       expect(Papercall.submitted_talks.length).to be > 0
       expect(Papercall.accepted_talks.length).to be > 0
       expect(Papercall.rejected_talks.length).to be > 0
+      expect(Papercall.waitlist_talks.length).to be > 0
     end
 
     it 'should fetch submitted from papercall' do
@@ -71,7 +72,16 @@ describe Papercall do
     it 'should list all active reviewers' do
       expect(Papercall.active_reviewers.length).to be 21
     end
+
+    it 'should list submissions without feedback' do
+      expect(Papercall.submissions_without_feedback.length).to be 1
+    end
+
+    it 'should list submissions with enough reviews' do
+      expect(Papercall.submissions_with_enough_reviews.length).to be 2
+    end
   end
+
   #
   # Features:
   # Fetch from papercall - feedback

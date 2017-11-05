@@ -1,7 +1,6 @@
 # Module for fetching submissions from the PaperCall.io paper submission system
 # Also providing some analytics
 module Papercall
-  attr_accessor :analysis
   METHOD_REGEX = /(.*)_talks$/
 
   def self.fetch(from, api_key='', *states)
@@ -11,6 +10,8 @@ module Papercall
       @submissions = Papercall::RestFetcher.new(api_key)
     end
     @submissions.fetch(states)
+    @analysis = Papercall::Analysis.new(@submissions.analysis)
+    @analysis = @analysis.analyze
   end
 
   def self.all
@@ -33,20 +34,15 @@ module Papercall
   end
 
   def self.active_reviewers
-    # TODO Move this logic to a separate analysis function
-    # TODO Fetch reviews for each submission
-    reviewers = {}
-    all.each do |submission|
-      submission['ratings'].each do |rating|
-        unless(reviewers.include?(rating['user']['name']))
-          reviewers[rating['user']['name']] = [{:id => rating['submission_id']}]
-        else
-          reviewers[rating['user']['name']].push({:id => rating['submission_id']})
-        end
-      end
-    end
-    #@analysis['reviewers'] = reviewers
-    reviewers
+    @analysis['reviewers']
+  end
+
+  def self.submissions_without_feedback
+    @analysis['talksWithoutFeedback']
+  end
+
+  def self.submissions_with_enough_reviews
+    @analysis['talksWithLessThanThreeReviews']
   end
 
   def self.respond_to_missing?(method_name, _include_private = false)

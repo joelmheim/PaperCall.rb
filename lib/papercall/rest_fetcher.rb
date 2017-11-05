@@ -36,16 +36,27 @@ module Papercall
         end
       end
       fetch_ratings
+      fetch_feedback
     end
 
     def fetch_ratings
+      puts "Fetching ratings for all submissions from Papercall API..."
       analysis.each do |submission|
         unless submission['ratings']
           ratings_url = "#{SUBMISSIONS_URL}/#{submission['id']}/ratings"
-          submission["ratings"] = papercall(ratings_url)
+          submission['ratings'] = papercall(ratings_url)
         end
       end
     end
 
+    def fetch_feedback
+      puts "Fetching feedback for all submissions from Papercall API..."
+      analysis.each do |submission|
+        unless submission['feedback']
+          feedback_url = "#{SUBMISSIONS_URL}/#{submission['id']}/feedback"
+          submission['feedback'] = papercall(feedback_url)
+        end
+      end
+    end
   end
 end
