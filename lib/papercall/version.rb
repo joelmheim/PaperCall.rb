@@ -1,3 +1,3 @@
 module Papercall
-  VERSION = '0.1.0'.freeze
+  VERSION = '0.10.0'.freeze
 end

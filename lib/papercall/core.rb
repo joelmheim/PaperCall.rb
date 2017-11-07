@@ -45,6 +45,25 @@ module Papercall
     @analysis['talksWithLessThanThreeReviews']
   end
 
+  def self.summary
+    s = @analysis['summary']
+    puts "Number of submissions: #{s['numSubmissions']}"
+    puts "Number of active reviewers: #{s['numActiveReviewers']}"
+    puts "Number of submitted talks without feedback: #{s['numWithoutFeedback']}"
+    puts "Number of talks with three or more reviews: #{s['numCompleted']}"
+    puts "Number of highly rated talks: #{s['numHighlyRated']}"
+    puts "Number of low rated talks: #{s['numLowRated']}"
+    puts "Number of middle rated talks: #{s['numMaybe']}"
+    puts "Number of talks with less than three reviews: #{s['numLessThanThreeReviews']}"
+    puts "Number of talks with four or more reviews: #{s['numWithFourOrMoreReviews']}"
+    puts "Number of talks without reviews: #{s['numWithoutReviews']}"
+    puts "Number of accepted talks: #{s['numAccepted']}"
+    puts "Number of waitlisted talks: #{s['numWaitlisted']}"
+    puts "Number of rejected talks: #{s['numRejected']}"
+    puts "Number of confirmed talks: #{s['numConfirmed']}"
+    s
+  end
+
   def self.respond_to_missing?(method_name, _include_private = false)
     METHOD_REGEX.match method_name.to_s
   end

@@ -18,6 +18,7 @@ module Papercall
     end
 
     def analyze
+      puts "Performing analysis..."
       @analysis['submissions'].each do |submission|
         submission["ratings"].each do |rating|
           unless(@analysis['reviewers'].include?(rating["user"]["name"]))

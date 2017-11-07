@@ -7,21 +7,12 @@ Gem::Specification.new do |spec|
   spec.name          = "papercall"
   spec.version       = Papercall::VERSION
   spec.authors       = ["Jørn Ølmheim"]
-  spec.email         = ["joe@statoil.com"]
+  spec.email         = ["jorn@olmheim.com"]
 
   spec.summary       = "Small client library for the PaperCall API"
   spec.description   = "Small client library for the PaperCall API. With some analytics for the submissions."
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "https://github.com/joelmheim/PaperCall.rb"
   spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -33,11 +24,11 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.13"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "guard"
-  spec.add_development_dependency "guard-rspec"
-  spec.add_development_dependency "pry"
-  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "guard", "~> 2.13"
+  spec.add_development_dependency "guard-rspec", "~> 4.7", ">= 4.7.3"
+  spec.add_development_dependency "pry", "~> 0.11.2"
+  spec.add_development_dependency "rubocop", "~> 0.51.0"
 
-  spec.add_dependency "json"
-  spec.add_dependency "rest-client"
+  spec.add_dependency "json", "~> 2.1"
+  spec.add_dependency "rest-client", "~> 2.0", ">= 2.0.2"
 end

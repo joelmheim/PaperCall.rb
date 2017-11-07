@@ -80,6 +80,10 @@ describe Papercall do
     it 'should list submissions with enough reviews' do
       expect(Papercall.submissions_with_enough_reviews.length).to be 2
     end
+
+    it 'should have a summary method' do
+      expect(Papercall.summary).not_to be nil
+    end
   end
 
   #
