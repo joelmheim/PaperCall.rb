@@ -22,7 +22,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+The following code will fetch all the submissions from your event and print a summary of stats:
+
+```ruby
+require 'papercall'
+
+Papercall.fetch(:from_papercall, "<your api key>", :submitted, :accepted, :rejected, :waitlist, :declined)
+Papercall.summary
+```
 
 ## Development
 
@@ -38,4 +45,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
