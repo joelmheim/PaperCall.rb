@@ -29,6 +29,7 @@ module Papercall
     end
 
     def fetch(*states)
+      states = [[:submitted, :accepted, :rejected, :waitlist, :declined]] if states == [[:all]]
       states.flatten.each do |state|
         if state
           puts "Fetching #{state} submissions from PaperCall API..."

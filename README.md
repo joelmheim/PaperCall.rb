@@ -1,8 +1,12 @@
 # Papercall
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/papercall`. To experiment with that code, run `bin/console` for an interactive prompt.
+Papercall.io is a nice conference management system that allows you to put out a call for papers and manage the entire review process. This ruby-gem uses the Papercall API to fetch all the submitted papers and do some analysis.
 
-TODO: Delete this and the text above, and describe your gem
+Examples of the type of stats available are:
+ * Number of papers in different states
+ * Number of active reviewers
+ * Number of submitted papers without any feedback
+ * Number of papers missing reviews
 
 ## Installation
 
@@ -10,7 +14,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'papercall'
-```
+``````
 
 And then execute:
 
@@ -30,6 +34,23 @@ require 'papercall'
 Papercall.fetch(:from_papercall, "<your api key>", :submitted, :accepted, :rejected, :waitlist, :declined)
 Papercall.summary
 ```
+
+The Papercall gem also allows you to fetch individual states, or just the ones you care about:
+
+```ruby
+Papercall.fetch(:from_papercall, "<your api key", :submitted, :accepted)
+```
+or
+```ruby
+Papercall.fetch(:from_papercall, "<your api key", :rejected, :declined, :waitelist)
+```
+The order does not matter.
+
+You can also use this shortcut if you want to fetch all:
+```ruby
+Papercall.fetch(:from_papercall, "<your api key", :all)
+```
+
 
 ## Development
 

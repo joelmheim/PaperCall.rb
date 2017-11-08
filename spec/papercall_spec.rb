@@ -40,11 +40,15 @@ describe Papercall do
       Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :declined)
       expect(Papercall.declined_talks.length).to be > 0
     end
+
+    it 'should fetch multiple states from papercall' do
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submissions, :accepted)
+    end
   end
 
   describe Papercall, '#all_submissions' do
     before(:context) do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submitted, :accepted, :rejected, :waitlist, :declined)
+      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :all)
     end
 
     it 'should fetch all submissions from papercall' do
