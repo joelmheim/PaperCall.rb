@@ -53,7 +53,7 @@ describe Papercall do
 
     it 'should fetch all submissions from papercall' do
       expect(Papercall.submitted_talks.length).to be 0
-      expect(Papercall.accepted_talks.length).to be 50
+      expect(Papercall.accepted_talks.length).to be 52
       expect(Papercall.rejected_talks.length).to be 45
       expect(Papercall.waitlist_talks.length).to be 9
       expect(Papercall.declined_talks.length).to be 3
@@ -66,11 +66,11 @@ describe Papercall do
     end
 
     it 'should be able to tell the total number of submissions' do
-      expect(Papercall.number_of_submissions).to be 107
+      expect(Papercall.number_of_submissions).to be 109
     end
 
     it 'should list number of confirmed talks' do
-      expect(Papercall.confirmed_talks.length).to be 47
+      expect(Papercall.confirmed_talks.length).to be 49
     end
 
     it 'should list all active reviewers' do

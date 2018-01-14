@@ -16,7 +16,7 @@ module Papercall
       @declined = []
     end
 
-    def submission_url(state, per_page: 50)
+    def submission_url(state, per_page: 150)
       "#{SUBMISSIONS_URL}?state=#{state}&per_page=#{per_page}"
     end
 
