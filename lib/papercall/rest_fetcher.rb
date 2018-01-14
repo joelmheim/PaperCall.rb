@@ -32,8 +32,10 @@ module Papercall
       states = [[:submitted, :accepted, :rejected, :waitlist, :declined]] if states == [[:all]]
       states.flatten.each do |state|
         if state
-          puts "Fetching #{state} submissions from PaperCall API..."
+          startTime = Time.now
+          print "Fetching #{state} submissions from PaperCall API..."
           instance_variable_set("@#{state}", papercall(submission_url(state.to_s)))
+          puts "finished in #{Time.now - startTime} seconds."
         end
       end
       fetch_ratings
@@ -41,23 +43,27 @@ module Papercall
     end
 
     def fetch_ratings
-      puts "Fetching ratings for all submissions from Papercall API..."
+      startTime = Time.now
+      print "Fetching ratings for all submissions from Papercall API..."
       analysis.each do |submission|
         unless submission['ratings']
           ratings_url = "#{SUBMISSIONS_URL}/#{submission['id']}/ratings"
           submission['ratings'] = papercall(ratings_url)
         end
       end
+      puts "finished in #{Time.now - startTime} seconds."
     end
 
     def fetch_feedback
-      puts "Fetching feedback for all submissions from Papercall API..."
+      startTime = Time.now
+      print "Fetching feedback for all submissions from Papercall API..."
       analysis.each do |submission|
         unless submission['feedback']
           feedback_url = "#{SUBMISSIONS_URL}/#{submission['id']}/feedback"
           submission['feedback'] = papercall(feedback_url)
         end
       end
+      puts "finished in #{Time.now - startTime} seconds."
     end
   end
 end

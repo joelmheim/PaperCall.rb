@@ -18,28 +18,30 @@ module Papercall
     end
 
     def analyze
-      puts "Performing analysis..."
+      startTime = Time.now
+      print "Performing analysis..."
       @analysis['submissions'].each do |submission|
         submission["ratings"].each do |rating|
           unless(@analysis['reviewers'].include?(rating["user"]["name"]))
             @analysis['reviewers'][rating["user"]["name"]] = [{:id => rating["submission_id"]}]
           else
-            @analysis['reviewers'][rating['user']['name']].push({:id => rating["submission_id"]})
+            @analysis['reviewers'][rating['user']['name']] << {:id => rating["submission_id"]}
           end
         end
-        @analysis['talksWithoutReviews'].push({:id => submission["id"]}) if submission["ratings"].empty?
-        @analysis['talksWithFourOrMoreReviews'].push({:id => submission["id"]}) if submission["ratings"].size >= 4
-        @analysis['talksWithLessThanThreeReviews'].push({:id => submission["id"]}) if submission["ratings"].size < 3
-        @analysis['talksWithoutFeedback'].push({:id => submission["id"]}) if submission["feedback"].empty?
-        @analysis['highlyRated'].push({:id => submission["id"], :submission => submission}) if highlyRated? submission
-        @analysis['lowRated'].push({:id => submission["id"], :submission => submission}) if lowRated? submission
-        @analysis['maybe'].push({:id => submission["id"], :submission => submission}) if maybe? submission
-        @analysis['accepted'].push({:id => submission["id"], :submission => submission}) if accepted? submission
-        @analysis['waitlist'].push({:id => submission["id"], :submission => submission}) if waitlisted? submission
-        @analysis['rejected'].push({:id => submission["id"], :submission => submission}) if rejected? submission
-        @analysis['confirmed'].push({:id => submission["id"], :submission => submission}) if confirmed? submission
+        @analysis['talksWithoutReviews'] << {:id => submission["id"]} if submission["ratings"].empty?
+        @analysis['talksWithFourOrMoreReviews'] << {:id => submission["id"]} if submission["ratings"].size >= 4
+        @analysis['talksWithLessThanThreeReviews'] << {:id => submission["id"]} if submission["ratings"].size < 3
+        @analysis['talksWithoutFeedback'] << {:id => submission["id"]} if submission["feedback"].empty?
+        @analysis['highlyRated'] << {:id => submission["id"], :submission => submission} if highlyRated? submission
+        @analysis['lowRated'] << {:id => submission["id"], :submission => submission} if lowRated? submission
+        @analysis['maybe'] << {:id => submission["id"], :submission => submission} if maybe? submission
+        @analysis['accepted'] << {:id => submission["id"], :submission => submission} if accepted? submission
+        @analysis['waitlist'] << {:id => submission["id"], :submission => submission} if waitlisted? submission
+        @analysis['rejected'] << {:id => submission["id"], :submission => submission} if rejected? submission
+        @analysis['confirmed'] << {:id => submission["id"], :submission => submission} if confirmed? submission
       end
       @analysis['summary'] = summary
+      puts "finished in #{Time.now - startTime} seconds."
       @analysis
     end
 
