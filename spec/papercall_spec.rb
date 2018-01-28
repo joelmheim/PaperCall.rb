@@ -88,6 +88,10 @@ describe Papercall do
     it 'should have a summary method' do
       expect(Papercall.summary).not_to be nil
     end
+
+    it 'should expose all analysis results' do
+      expect(Papercall.analysis).to be_an Object
+    end
   end
 
   #

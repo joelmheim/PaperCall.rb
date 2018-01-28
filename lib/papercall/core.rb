@@ -45,6 +45,10 @@ module Papercall
     @analysis['talksWithLessThanThreeReviews']
   end
 
+  def self.analysis
+    @analysis
+  end
+
   def self.summary
     s = @analysis['summary']
     puts "Number of submissions: #{s['numSubmissions']}"
