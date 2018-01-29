@@ -92,6 +92,7 @@ describe Papercall do
     it 'should expose all analysis results' do
       expect(Papercall.analysis).to be_an Object
     end
+
   end
 
   #

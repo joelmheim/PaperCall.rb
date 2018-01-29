@@ -28,10 +28,10 @@ module Papercall
             @analysis['reviewers'][rating['user']['name']] << {:id => rating["submission_id"]}
           end
         end
-        @analysis['talksWithoutReviews'] << {:id => submission["id"]} if submission["ratings"].empty?
-        @analysis['talksWithFourOrMoreReviews'] << {:id => submission["id"]} if submission["ratings"].size >= 4
-        @analysis['talksWithLessThanThreeReviews'] << {:id => submission["id"]} if submission["ratings"].size < 3
-        @analysis['talksWithoutFeedback'] << {:id => submission["id"]} if submission["feedback"].empty?
+        @analysis['talksWithoutReviews'] << {:id => submission["id"], :submission => submission} if submission["ratings"].empty?
+        @analysis['talksWithFourOrMoreReviews'] << {:id => submission["id"], :submission => submission} if submission["ratings"].size >= 4
+        @analysis['talksWithLessThanThreeReviews'] << {:id => submission["id"], :submission => submission} if submission["ratings"].size < 3
+        @analysis['talksWithoutFeedback'] << {:id => submission["id"], :submission => submission} if submission["feedback"].empty?
         @analysis['highlyRated'] << {:id => submission["id"], :submission => submission} if highlyRated? submission
         @analysis['lowRated'] << {:id => submission["id"], :submission => submission} if lowRated? submission
         @analysis['maybe'] << {:id => submission["id"], :submission => submission} if maybe? submission
