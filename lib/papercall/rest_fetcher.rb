@@ -1,5 +1,6 @@
 require 'json'
 require 'rest-client'
+require 'parallel'
 
 module Papercall
   #Fetches submissions from Papercall REST API
@@ -25,43 +26,49 @@ module Papercall
         RestClient::Request.execute(method: :get,
                                     url: papercall_url,
                                     headers: @auth_hash) # :timeout => 120
-      JSON.parse raw_results
+      if raw_results
+        JSON.parse raw_results
+      else
+        []
+      end
     end
 
     def fetch(*states)
-      states = [[:submitted, :accepted, :rejected, :waitlist, :declined]] if states == [[:all]]
+      states = [%i[submitted accepted rejected waitlist declined]] if states == [[:all]]
       states.flatten.each do |state|
-        if state
-          startTime = Time.now
-          print "Fetching #{state} submissions from PaperCall API..."
-          instance_variable_set("@#{state}", papercall(submission_url(state.to_s)))
-          puts "finished in #{Time.now - startTime} seconds."
-        end
+        next unless state
+        start_time = Time.now
+        print "Fetching #{state} submissions from PaperCall API..."
+        instance_variable_set("@#{state}", papercall(submission_url(state.to_s)))
+        puts "finished in #{Time.now - start_time} seconds."
       end
       fetch_ratings
       fetch_feedback
     end
 
     def fetch_ratings
-      startTime = Time.now
+      start_time = Time.now
       print "Fetching ratings for all submissions from Papercall API..."
-      analysis.each do |submission|
+
+      Parallel.each(analysis, in_threads: 8) do |submission|
         unless submission['ratings']
           ratings_url = "#{SUBMISSIONS_URL}/#{submission['id']}/ratings"
           submission['ratings'] = papercall(ratings_url)
         end
+        submission['ratings'] = [] unless submission['ratings']
       end
-      puts "finished in #{Time.now - startTime} seconds."
+      puts "finished in #{Time.now - start_time} seconds."
     end
 
     def fetch_feedback
       startTime = Time.now
       print "Fetching feedback for all submissions from Papercall API..."
-      analysis.each do |submission|
+      Parallel.each(analysis, in_threads: 8) do |submission|
         unless submission['feedback']
           feedback_url = "#{SUBMISSIONS_URL}/#{submission['id']}/feedback"
           submission['feedback'] = papercall(feedback_url)
         end
+        submission['feedback'] = [] unless submission['feedback']
       end
       puts "finished in #{Time.now - startTime} seconds."
     end

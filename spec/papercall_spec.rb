@@ -24,6 +24,7 @@ describe Papercall do
     it 'should fetch accepted from papercall' do
       Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :accepted)
       expect(Papercall.accepted_talks.length).to be > 0
+      expect(Papercall.accepted_talks[0]["ratings"].length).to be > 0
     end
 
     it 'should fetch rejected from papercall' do
