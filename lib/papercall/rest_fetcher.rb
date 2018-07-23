@@ -3,7 +3,7 @@ require 'rest-client'
 require 'parallel'
 
 module Papercall
-  #Fetches submissions from Papercall REST API
+  # Fetches submissions from Papercall REST API
   # Params:
   class RestFetcher < Fetcher
     SUBMISSIONS_URL = 'https://www.papercall.io/api/v1/submissions'.freeze
@@ -48,7 +48,7 @@ module Papercall
 
     def fetch_ratings
       start_time = Time.now
-      print "Fetching ratings for all submissions from Papercall API..."
+      print 'Fetching ratings for all submissions from Papercall API...'
 
       Parallel.each(analysis, in_threads: 8) do |submission|
         unless submission['ratings']
@@ -61,8 +61,8 @@ module Papercall
     end
 
     def fetch_feedback
-      startTime = Time.now
-      print "Fetching feedback for all submissions from Papercall API..."
+      start_time = Time.now
+      print 'Fetching feedback for all submissions from Papercall API...'
       Parallel.each(analysis, in_threads: 8) do |submission|
         unless submission['feedback']
           feedback_url = "#{SUBMISSIONS_URL}/#{submission['id']}/feedback"
@@ -70,7 +70,7 @@ module Papercall
         end
         submission['feedback'] = [] unless submission['feedback']
       end
-      puts "finished in #{Time.now - startTime} seconds."
+      puts "finished in #{Time.now - start_time} seconds."
     end
   end
 end
