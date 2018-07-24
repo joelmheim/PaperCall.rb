@@ -50,7 +50,7 @@ module Papercall
       start_time = Time.now
       print 'Fetching ratings for all submissions from Papercall API...'
 
-      Parallel.each(analysis, in_threads: 8) do |submission|
+      Parallel.each(analysis, in_threads: 32) do |submission|
         unless submission['ratings']
           ratings_url = "#{SUBMISSIONS_URL}/#{submission['id']}/ratings"
           submission['ratings'] = papercall(ratings_url)
@@ -63,7 +63,7 @@ module Papercall
     def fetch_feedback
       start_time = Time.now
       print 'Fetching feedback for all submissions from Papercall API...'
-      Parallel.each(analysis, in_threads: 8) do |submission|
+      Parallel.each(analysis, in_threads:  32) do |submission|
         unless submission['feedback']
           feedback_url = "#{SUBMISSIONS_URL}/#{submission['id']}/feedback"
           submission['feedback'] = papercall(feedback_url)
