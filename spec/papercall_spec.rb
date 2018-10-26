@@ -18,7 +18,7 @@ describe Papercall do
     it 'should fetch submitted from papercall' do
       Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submitted)
       # CFP is closed no more regular submissions
-      expect(Papercall.submitted_talks.length).to be 0
+      expect(Papercall.submitted_talks.length).to be 2
     end
 
     it 'should fetch accepted from papercall' do
@@ -53,9 +53,9 @@ describe Papercall do
     end
 
     it 'should fetch all submissions from papercall' do
-      expect(Papercall.submitted_talks.length).to be 0
+      expect(Papercall.submitted_talks.length).to be 2
       expect(Papercall.accepted_talks.length).to be 52
-      expect(Papercall.rejected_talks.length).to be 45
+      expect(Papercall.rejected_talks.length).to be 43
       expect(Papercall.waitlist_talks.length).to be 9
       expect(Papercall.declined_talks.length).to be 3
     end
