@@ -1,6 +1,7 @@
 require 'papercall/version'
 require 'papercall/core'
 require 'papercall/fetcher'
+require 'papercall/configuration'
 require 'papercall/file_fetcher'
 require 'papercall/rest_fetcher'
 require 'papercall/analysis'

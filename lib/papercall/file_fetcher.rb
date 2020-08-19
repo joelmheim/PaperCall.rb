@@ -5,8 +5,9 @@ module Papercall
   # Params:
   # +filename+:: File with submissions. JSON format.
   class FileFetcher < Fetcher
-    def initialize(filename)
-      @filename = filename
+    def initialize()
+      @output = Papercall.configuration.output
+      @filename = Papercall.configuration.input_file
       @submitted = []
       @accepted = []
       @rejected = []
@@ -16,7 +17,7 @@ module Papercall
 
     def fetch(_)
       file = File.new(@filename, 'r')
-      puts "Reading from file (#{file.path})..."
+      puts "Reading from file (#{file.path})..." if @output
       submissions = JSON.parse file.read if file
       @submitted = submissions['submitted']
       @accepted = submissions['accepted']
