@@ -21,17 +21,17 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.13"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "guard", "~> 2.13"
+  spec.add_development_dependency "bundler", "~> 2.1"
+  spec.add_development_dependency "rake", "~> 13.0"
+  spec.add_development_dependency "rspec", "~> 3.9"
+  spec.add_development_dependency "guard", "~> 2.16.2"
   spec.add_development_dependency "guard-rspec", "~> 4.7", ">= 4.7.3"
-  spec.add_development_dependency "pry", "~> 0.11.2"
-  spec.add_development_dependency "rubocop", "~> 0.51.0"
+  spec.add_development_dependency "pry", "~> 0.13.1"
+  spec.add_development_dependency "rubocop", "~> 0.89.1"
 
-  spec.add_dependency "json", "~> 2.1"
-  spec.add_dependency "rest-client", "~> 2.0", ">= 2.0.2"
-  spec.add_dependency "activesupport", "~> 5.0"
-  spec.add_dependency "i18n", "~> 0.9.1"
+  spec.add_dependency "json", "~> 2.3.1"
+  spec.add_dependency "rest-client", "~> 2.1", ">= 2.1.0"
+  spec.add_dependency "activesupport", "~> 6.0"
+  spec.add_dependency "i18n", "~> 1.8.5"
   spec.add_dependency "parallel", "~> 1.12.1"
 end

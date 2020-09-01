@@ -1,6 +1,7 @@
 module Papercall
   class Analysis
     def initialize submissions
+      @output = Papercall.configuration.output
       @analysis = {}
       @analysis['submissions'] = submissions
       @analysis['reviewers'] = {}
@@ -19,7 +20,7 @@ module Papercall
 
     def analyze
       start_time = Time.now
-      print 'Performing analysis...'
+      print 'Performing analysis...' if @output
       @analysis['submissions'].each do |submission|
         submission['ratings'].each do |rating|
           if !(@analysis['reviewers'].include? rating['user']['name'])
@@ -41,7 +42,7 @@ module Papercall
         @analysis['confirmed'] << { id: submission['id'], submission: submission } if confirmed? submission
       end
       @analysis['summary'] = summary
-      puts "finished in #{Time.now - start_time} seconds."
+      puts "finished in #{Time.now - start_time} seconds." if @output
       @analysis
     end
 
