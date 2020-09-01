@@ -3,7 +3,7 @@ require_relative 'talk'
 
 class Submission
   attr_reader :id, :state, :confirmed, :created_at, :updated_at, :additional_info, :rating, :trust, :tags,
-              :co_presenter_profiles, :presenter_profile, :talk, :cfp_additional_question_answers,
+              :co_presenter_profiles, :presenter_profile, :talk, :cfp_additional_answers,
               :ratings, :feedback
 
   def initialize(json_hash)
@@ -19,7 +19,9 @@ class Submission
     @co_presenter_profiles = json_hash[:co_presenter_profiles]
     @presenter_profile = PresenterProfile.new(json_hash[:profile])
     @talk = Talk.new(json_hash[:talk])
-    @cfp_additional_question_answers = json_hash[:cfp_additional_question_answers]
+    @cfp_additional_answers = json_hash[:cfp_additional_question_answers]
+    @ratings = []
+    @feedback = []
   end
 
   def confirmed?

@@ -31,26 +31,54 @@ The following code will fetch all the submissions from your event and print a su
 ```ruby
 require 'papercall'
 
-Papercall.fetch(:from_papercall, "<your api key>", :submitted, :accepted, :rejected, :waitlist, :declined)
+Papercall.configure do |config|
+   config.API_KEY = "<your api key>"
+end
+Papercall.fetch(:from_papercall, :submitted, :accepted, :rejected, :waitlist, :declined)
 Papercall.summary
 ```
 
 The Papercall gem also allows you to fetch individual states, or just the ones you care about:
 
 ```ruby
-Papercall.fetch(:from_papercall, "<your api key", :submitted, :accepted)
+Papercall.configure do |config|
+   config.API_KEY = "<your api key>"
+end
+Papercall.fetch(:from_papercall, :submitted, :accepted)
 ```
 or
 ```ruby
-Papercall.fetch(:from_papercall, "<your api key", :rejected, :declined, :waitelist)
+Papercall.configure do |config|
+   config.API_KEY = "<your api key>"
+end
+Papercall.fetch(:from_papercall, :rejected, :declined, :waitelist)
 ```
 The order does not matter.
 
 You can also use this shortcut if you want to fetch all:
 ```ruby
-Papercall.fetch(:from_papercall, "<your api key", :all)
+Papercall.configure do |config|
+   config.API_KEY = "<your api key>"
+end
+Papercall.fetch(:from_papercall, :all)
 ```
 
+## Other configuration options
+You can configure the following attributes:
+ * API key
+ * Turning output on or off (default is on)
+ * Input file - used for reading from submissions from file (default: submissions.json)
+ * Number of threads - number of parallel threads used to fetch ratings and feedback (default 150)
+ 
+Example:
+```ruby
+Papercall.configure do |config|
+  config.API_KEY = "<your api key>"
+  config.output = false
+  config.threads = 200
+  config.input_file = "my_subscription.txt"
+end
+```
 
 ## Development
 

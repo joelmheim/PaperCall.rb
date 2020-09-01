@@ -99,6 +99,6 @@ describe Submission do
   end
 
   it 'has cfp additional question answers' do
-    expect(@s.cfp_additional_question_answers.length).to be 0
+    expect(@s.cfp_additional_answers.length).to be 0
   end
 end

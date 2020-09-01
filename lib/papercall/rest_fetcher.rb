@@ -8,7 +8,10 @@ module Papercall
   class RestFetcher < Fetcher
     SUBMISSIONS_URL = 'https://www.papercall.io/api/v1/submissions'.freeze
 
-    def initialize(api_key)
+    def initialize()
+      @output = Papercall.configuration.output
+      api_key = Papercall.configuration.API_KEY
+      raise ArgumentError, 'Missing API_KEY for access to Papercall. Please refer to documentation for instructions on setting this value.' unless api_key
       @auth_hash = { Authorization: api_key }
       @submitted = []
       @accepted = []
@@ -38,9 +41,9 @@ module Papercall
       states.flatten.each do |state|
         next unless state
         start_time = Time.now
-        print "Fetching #{state} submissions from PaperCall API..."
+        print "Fetching #{state} submissions from PaperCall API..." if @output
         instance_variable_set("@#{state}", papercall(submission_url(state.to_s)))
-        puts "finished in #{Time.now - start_time} seconds."
+        puts "finished in #{Time.now - start_time} seconds." if @output
       end
       fetch_ratings
       fetch_feedback
@@ -48,29 +51,29 @@ module Papercall
 
     def fetch_ratings
       start_time = Time.now
-      print 'Fetching ratings for all submissions from Papercall API...'
+      print 'Fetching ratings for all submissions from Papercall API...' if @output
 
-      Parallel.each(analysis, in_threads: 32) do |submission|
+      Parallel.each(analysis, in_threads: 128) do |submission|
         unless submission['ratings']
           ratings_url = "#{SUBMISSIONS_URL}/#{submission['id']}/ratings"
           submission['ratings'] = papercall(ratings_url)
         end
         submission['ratings'] = [] unless submission['ratings']
       end
-      puts "finished in #{Time.now - start_time} seconds."
+      puts "finished in #{Time.now - start_time} seconds." if @output
     end
 
     def fetch_feedback
       start_time = Time.now
-      print 'Fetching feedback for all submissions from Papercall API...'
-      Parallel.each(analysis, in_threads:  32) do |submission|
+      print 'Fetching feedback for all submissions from Papercall API...' if @output
+      Parallel.each(analysis, in_threads:  128) do |submission|
         unless submission['feedback']
           feedback_url = "#{SUBMISSIONS_URL}/#{submission['id']}/feedback"
           submission['feedback'] = papercall(feedback_url)
         end
         submission['feedback'] = [] unless submission['feedback']
       end
-      puts "finished in #{Time.now - start_time} seconds."
+      puts "finished in #{Time.now - start_time} seconds." if @output
     end
   end
 end
