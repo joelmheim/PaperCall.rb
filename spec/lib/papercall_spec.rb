@@ -2,9 +2,41 @@ require 'spec_helper'
 require 'papercall'
 
 describe Papercall do
-  describe Papercall, '#fetch' do
+  describe Papercall, '#version_and_config' do
     it 'has a version number' do
       expect(Papercall::VERSION).not_to be nil
+    end
+
+    it 'should return an error when no API_KEY is configured' do
+      expect{Papercall.fetch(:from_papercall)}.to raise_error(ArgumentError)
+    end
+
+    it 'accepts API_KEY as configuration' do
+      Papercall.configure do |config|
+        config.API_KEY = '123abcGiveMeAccess'
+      end
+      expect(Papercall.configuration.API_KEY).to eq '123abcGiveMeAccess'
+    end
+
+    it 'has default input_file config value' do
+      expect(Papercall.configuration.input_file).to eq 'submissions.json'
+    end
+
+    it 'has default configuration for number of threads' do
+      expect(Papercall.configuration.threads).to be 150
+    end
+
+    it 'has default configuration for displaying output' do
+      expect(Papercall.configuration.output).to be true
+    end
+  end
+
+  xdescribe Papercall, '#fetch' do
+    before(:context) do
+      Papercall.configure do |config|
+        config.API_KEY = ENV['PAPERCALL_TEST_KEY']
+        config.output = false
+      end
     end
 
     it 'should read submissions from file' do
@@ -16,40 +48,43 @@ describe Papercall do
     end
 
     it 'should fetch submitted from papercall' do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submitted)
-      # CFP is closed no more regular submissions
+      Papercall.fetch(:from_papercall, :submitted)
       expect(Papercall.submitted_talks.length).to be 2
     end
 
     it 'should fetch accepted from papercall' do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :accepted)
+      Papercall.fetch(:from_papercall, :accepted)
       expect(Papercall.accepted_talks.length).to be > 0
       expect(Papercall.accepted_talks[0]["ratings"].length).to be > 0
     end
 
     it 'should fetch rejected from papercall' do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :rejected)
+      Papercall.fetch(:from_papercall, :rejected)
       expect(Papercall.rejected_talks.length).to be > 0
     end
 
     it 'should fetch waitlist from papercall' do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :waitlist)
+      Papercall.fetch(:from_papercall, :waitlist)
       expect(Papercall.waitlist_talks.length).to be > 0
     end
 
     it 'should fetch declined from papercall' do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :declined)
+      Papercall.fetch(:from_papercall, :declined)
       expect(Papercall.declined_talks.length).to be > 0
     end
 
     it 'should fetch multiple states from papercall' do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :submissions, :accepted)
+      Papercall.fetch(:from_papercall, :submissions, :accepted)
     end
   end
 
-  describe Papercall, '#all_submissions' do
+  xdescribe Papercall, '#all_submissions' do
     before(:context) do
-      Papercall.fetch(:from_papercall, '7460df7e664ca9511fc3c698381e0115', :all)
+      Papercall.configure do |config|
+        config.API_KEY = ENV['PAPERCALL_TEST_KEY']
+        config.output = false
+      end
+      Papercall.fetch(:from_papercall, :all)
     end
 
     it 'should fetch all submissions from papercall' do
@@ -64,6 +99,16 @@ describe Papercall do
       filename = 'test_write.json'
       Papercall.save_to_file(filename)
       expect(File).to exist(filename)
+    end
+  end
+
+  xdescribe Papercall, '#analysis' do
+    before(:context) do
+      Papercall.configure do |config|
+        config.API_KEY = ENV['PAPERCALL_TEST_KEY']
+        config.output = false
+      end
+      Papercall.fetch(:from_papercall, :all)
     end
 
     it 'should be able to tell the total number of submissions' do
@@ -93,7 +138,6 @@ describe Papercall do
     it 'should expose all analysis results' do
       expect(Papercall.analysis).to be_an Object
     end
-
   end
 
   #
