@@ -3,8 +3,8 @@ require_relative 'talk'
 
 class Submission
   attr_reader :id, :state, :confirmed, :created_at, :updated_at, :additional_info, :rating, :trust, :tags,
-              :co_presenter_profiles, :presenter_profile, :talk, :cfp_additional_answers,
-              :ratings, :feedback
+              :co_presenter_profiles, :presenter_profile, :talk, :cfp_additional_answers
+  attr_accessor :ratings, :feedback
 
   def initialize(json_hash)
     @id = json_hash[:id]
@@ -24,7 +24,51 @@ class Submission
     @feedback = []
   end
 
+  def no_reviews?
+    @ratings.empty?
+  end
+
+  def enough_reviews?
+    @ratings.size >= 3
+  end
+
+  def too_many_reviews?
+    @ratings.size >= 4
+  end
+
+  def highly_rated?
+    @rating >= 75 && enough_reviews?
+  end
+
+  def low_rated?
+    @rating <= 25 && enough_reviews?
+  end
+
+  def maybe?
+    !accepted? && !rejected? && enough_reviews?
+  end
+
+  def accepted?
+    @state == 'accepted'
+  end
+
+  def rejected?
+    @state == 'rejected'
+  end
+
+  def waitlisted?
+    @state == 'waitlist'
+  end
+
   def confirmed?
-    @confirmed
+    accepted? && @confirmed == true
+  end
+
+  def no_feedback?
+    @feedback.empty?
+  end
+
+  def to_s
+    puts "Submission: #{@id}, #{@talk.title}, #{@presenter_profile.name}. Number of reviews: #{@ratings.size}. Number of feedback: #{@feedback.size}"
   end
 end

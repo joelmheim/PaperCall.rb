@@ -31,7 +31,7 @@ describe Papercall do
     end
   end
 
-  xdescribe Papercall, '#fetch' do
+  describe Papercall, '#fetch' do
     before(:context) do
       Papercall.configure do |config|
         config.API_KEY = ENV['PAPERCALL_TEST_KEY']
@@ -55,7 +55,7 @@ describe Papercall do
     it 'should fetch accepted from papercall' do
       Papercall.fetch(:from_papercall, :accepted)
       expect(Papercall.accepted_talks.length).to be > 0
-      expect(Papercall.accepted_talks[0]["ratings"].length).to be > 0
+      expect(Papercall.accepted_talks.first.ratings.length).to be > 0
     end
 
     it 'should fetch rejected from papercall' do
@@ -78,7 +78,7 @@ describe Papercall do
     end
   end
 
-  xdescribe Papercall, '#all_submissions' do
+  describe Papercall, '#all_submissions' do
     before(:context) do
       Papercall.configure do |config|
         config.API_KEY = ENV['PAPERCALL_TEST_KEY']
@@ -97,12 +97,13 @@ describe Papercall do
 
     it 'should save submissions to file' do
       filename = 'test_write.json'
-      Papercall.save_to_file(filename)
-      expect(File).to exist(filename)
+      puts Papercall.all
+      #Papercall.save_to_file(filename)
+      #expect(File).to exist(filename)
     end
   end
 
-  xdescribe Papercall, '#analysis' do
+  describe Papercall, '#analysis' do
     before(:context) do
       Papercall.configure do |config|
         config.API_KEY = ENV['PAPERCALL_TEST_KEY']
