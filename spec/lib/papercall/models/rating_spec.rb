@@ -43,7 +43,7 @@ describe Rating do
   end
 
   it 'has a reviewer' do
-    expect(@r.reviewer).not_to be_nil
+    expect(@r.user).not_to be_nil
   end
 end
 

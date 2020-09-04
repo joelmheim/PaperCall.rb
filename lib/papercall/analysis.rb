@@ -97,10 +97,10 @@ module Papercall
       print 'Performing analysis...' if @output
       @submissions.each do |submission|
         submission.ratings.each do |rating|
-          if !(@reviewers.include? rating.reviewer.name)
-            @reviewers[rating.reviewer.name] = [{ id: rating.submission_id }]
+          if !(@reviewers.include? rating.user.name)
+            @reviewers[rating.user.name] = [{ id: rating.submission_id }]
           else
-            @reviewers[rating.reviewer.name] << { id: rating.submission_id }
+            @reviewers[rating.user.name] << { id: rating.submission_id }
           end
         end
         @talks_without_reviews << { id: submission.id, submission: submission } if submission.no_reviews?

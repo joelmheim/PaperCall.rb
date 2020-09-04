@@ -71,4 +71,8 @@ class Submission
   def to_s
     puts "Submission: #{@id}, #{@talk.title}, #{@presenter_profile.name}. Number of reviews: #{@ratings.size}. Number of feedback: #{@feedback.size}"
   end
+
+  def to_json
+    this.to_h.to_json
+  end
 end

@@ -62,7 +62,7 @@ module Papercall
       Parallel.each(analysis, in_threads: 128) do |submission|
         if submission.ratings.empty?
           ratings_url = "#{SUBMISSIONS_URL}/#{submission.id}/ratings"
-          ratings = papercall(ratings_url)
+          ratings = papercall(ratings_url).map {|r| Rating.new(r)}
           submission.ratings = ratings
         end
         #submission.ratings = [] unless submission.ratings
