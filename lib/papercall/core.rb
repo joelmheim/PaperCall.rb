@@ -21,8 +21,8 @@ module Papercall
       @submissions = Papercall::RestFetcher.new
     end
     @submissions.fetch(states)
+    #puts @submissions.analysis
     @analysis = Papercall::Analysis.new(@submissions.analysis)
-    @analysis = @analysis.analyze
   end
 
   def self.all
@@ -40,20 +40,20 @@ module Papercall
 
   def self.confirmed_talks
     @submissions.accepted.select do |s|
-      s['confirmed'] == true
+      s.confirmed?
     end
   end
 
   def self.active_reviewers
-    @analysis['reviewers']
+    @analysis.reviewers
   end
 
   def self.submissions_without_feedback
-    @analysis['talksWithoutFeedback']
+    @analysis.talks_without_feedback
   end
 
   def self.submissions_with_enough_reviews
-    @analysis['talksWithLessThanThreeReviews']
+    @analysis.submissions - @analysis.talks_missing_reviews
   end
 
   def self.analysis
@@ -61,24 +61,24 @@ module Papercall
   end
 
   def self.summary
-    s = @analysis['summary']
+    a = @analysis
     if configuration.output
-      puts "Number of submissions: #{s['numSubmissions']}"
-      puts "Number of active reviewers: #{s['numActiveReviewers']}"
-      puts "Number of submitted talks without feedback: #{s['numWithoutFeedback']}"
-      puts "Number of talks with three or more reviews: #{s['numCompleted']}"
-      puts "Number of highly rated talks: #{s['numHighlyRated']}"
-      puts "Number of low rated talks: #{s['numLowRated']}"
-      puts "Number of middle rated talks: #{s['numMaybe']}"
-      puts "Number of talks with less than three reviews: #{s['numLessThanThreeReviews']}"
-      puts "Number of talks with four or more reviews: #{s['numWithFourOrMoreReviews']}"
-      puts "Number of talks without reviews: #{s['numWithoutReviews']}"
-      puts "Number of accepted talks: #{s['numAccepted']}"
-      puts "Number of waitlisted talks: #{s['numWaitlisted']}"
-      puts "Number of rejected talks: #{s['numRejected']}"
-      puts "Number of confirmed talks: #{s['numConfirmed']}"
+      puts "Number of submissions: #{a.number_of_submissions}"
+      puts "Number of active reviewers: #{a.number_of_active_reviewers}"
+      puts "Number of submitted talks without feedback: #{a.number_without_feedback}"
+      puts "Number of talks with three or more reviews: #{a.number_completed}"
+      puts "Number of highly rated talks: #{a.number_of_highly_rated}"
+      puts "Number of low rated talks: #{a.number_of_low_rated}"
+      puts "Number of middle rated talks: #{a.number_of_maybes}"
+      puts "Number of talks with less than three reviews: #{a.number_with_few_reviews}"
+      puts "Number of talks with four or more reviews: #{a.number_with_many_reviews}"
+      puts "Number of talks without reviews: #{a.number_without_reviews}"
+      puts "Number of accepted talks: #{a.number_accepted}"
+      puts "Number of waitlisted talks: #{a.number_of_waitlisted}"
+      puts "Number of rejected talks: #{a.number_rejected}"
+      puts "Number of confirmed talks: #{a.number_confirmed}"
     end
-    s
+    a
   end
 
   def self.respond_to_missing?(method_name, _include_private = false)
